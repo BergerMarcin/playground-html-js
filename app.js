@@ -51,7 +51,7 @@ function init() {
 
   // Small demo: write an initial log after load
   const isStrictMode = detectStrictMode();
-  const msgHTML = `app.js initialized in <u><b>${isStrictMode ? "strict mode" : 'sloppy mode'}</b></u>`;
+  const msgHTML = `app.js initialized in <u><b>${isStrictMode ? 'strict mode' : 'sloppy mode'}</b></u>`;
   log(msgHTML);
   console.log(msgHTML);
   console.log('this of init', this);
