@@ -1,0 +1,31 @@
+# Auto-detect text files and normalize to LF in the repository
+* text=auto
+
+# Ensure common text files use LF in the repo
+*.js text eol=lf
+*.json text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Treat common binary files as binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+
+# Node lockfiles and build artifacts are not source (useful for language stats)
+package-lock.json linguist-vendored
+yarn.lock linguist-vendored
+pnpm-lock.yaml linguist-vendored
+dist/ linguist-vendored
+
+# Ignore node_modules when creating archives from the repo
+node_modules/ export-ignore

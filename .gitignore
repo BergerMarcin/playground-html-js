@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+build/
+out/
+
+# logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+*.code-workspace
+.idea/
+
+# coverage
+coverage/
+
+# Prettier / cache
+.cache/
+
+# bundles
+*.bundle.js
+*.min.js
