@@ -33,5 +33,3 @@ To run in strict mode, comment out the sloppy tag and uncomment the module tag. 
 ```
 
 To switch back to sloppy mode, reverse the change.
-
-Tip: If you prefer toggling quickly during development, use your editor's block-comment shortcuts or git branches to switch between the two variants.
