@@ -97,6 +97,62 @@ console.log('%c*************** this & globalThis ***************', headerConsole
 console.log('Global scope. this:', this);
 console.log('Global scope. globalThis:', globalThis);
 
+/* ------------------ this in calls of "free" function ------------------ */
+
+console.log('%c*************** this in calls of "free" function ***************', headerConsoleStyle);
+
+function logFirstName() {
+  console.log(this?.firstName);
+}
+
+const firstPerson = {
+  firstName: 'Deepak',
+  logFirstName,
+};
+
+const secondPerson = {
+  firstName: 'Vishnu',
+  logFirstName,
+};
+
+logFirstName(); // undefined always in strict mode, globalThis.firstName in sloppy mode (here also undefined)
+var firstName = 'Vijay';
+logFirstName(); // Vijay in sloppy mode, undefined in strict mode
+firstPerson.logFirstName(); // Deepak
+secondPerson.logFirstName(); // Vishnu
+logFirstName.call({ firstName: 'Ajay' }); // Ajay
+logFirstName.apply(firstPerson); // Deepak
+logFirstName.bind(secondPerson)(); // Vishnu
+
+/* ------------------ this in calls of "free" function ------------------ */
+
+console.log('%c*************** this in calls of object`s method/function ***************', headerConsoleStyle);
+
+const objectPerson = {
+  objectFirstName: 'Ram',
+  objectLogFirstName() {
+    console.log(this?.objectFirstName);
+  }
+}
+
+const objectFirstPerson = {
+  objectFirstName: 'Deepak'
+};
+
+const objectSecondPerson = {
+  objectFirstName: 'Vishnu',
+};
+
+objectPerson.objectLogFirstName(); // Ram
+var objectFirstName = 'Vijay';
+objectPerson.objectLogFirstName(); // Ram
+objectPerson.objectLogFirstName.call(this); // Vijay in sloppy mode, undefined in strict mode
+objectPerson.objectLogFirstName.call({ objectFirstName: 'Ajay' }); // Ajay
+objectPerson.objectLogFirstName.apply(objectFirstPerson); // Deepak
+objectPerson.objectLogFirstName.bind(objectSecondPerson)(); // Vishnu
+objectFirstPerson.objectLogFirstName = objectPerson.objectLogFirstName;
+objectFirstPerson.objectLogFirstName(); // Deepak
+
 /* ------------------ CHAIN CALLS ------------------ */
 
 console.log('%c*************** CHAIN CALLS ***************', headerConsoleStyle);
