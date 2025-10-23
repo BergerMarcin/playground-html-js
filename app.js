@@ -85,7 +85,21 @@ async function fetchData() {
 fetchData();
 */
 
+/* ------------------ vanila JS playground ------------------ */
+
+const headerConsoleStyle = 'background: #c62828; color: #fff; padding: 2px 8px; border-radius: 4px;';
+const brakeConsoleStyle = 'background: #d4ba26ff; color: #000; padding: 2px 8px; border-radius: 4px;';
+
+/* ------------------ this & globalThis ------------------ */
+
+console.log('%c*************** this & globalThis ***************', headerConsoleStyle);
+
+console.log('Global scope. this:', this);
+console.log('Global scope. globalThis:', globalThis);
+
 /* ------------------ CHAIN CALLS ------------------ */
+
+console.log('%c*************** CHAIN CALLS ***************', headerConsoleStyle);
 
 const ladder = {
   step: 0,
@@ -107,6 +121,8 @@ ladder.up().up().down().showStep().down().showStep();
 
 /* ------------------ CHECKING scopes ------------------ */
 
+console.log('%c*************** CHECKING scopes ***************', headerConsoleStyle);
+
 // function test() {
 //   var testLocalVar = 'I am local';
 // }
@@ -115,14 +131,15 @@ ladder.up().up().down().showStep().down().showStep();
 
 /* ------------------ CHECKING scopes. Advanced ------------------ */
 
-console.log('*************** Checking scopes. Advanced. START ***************');
+console.log('%c*************** CHECKING scopes. Advanced ***************', headerConsoleStyle);
+
 var globalVarWithVar;
 let globalVarWithLet = "I'm variable of global with let";
 
 globalFunction(); // ✅ accessible due to hosting
 
 function globalFunction() {
-  console.log('------- globalFunction start -------');
+  console.log('%c------- globalFunction start -------', brakeConsoleStyle);
 
   var functionVarWithVar =
     "I'm variable of function with var (I was thinking I'm global but I'm local due to being in scope of globalFunction function)";
@@ -153,7 +170,7 @@ function globalFunction() {
   console.log('function -> block scope. functionBlockScopeVarWithVar:', functionBlockScopeVarWithVar); // ✅ accessible
   // console.log("function -> block scope. functionBlockScopeVarWithLet:", functionBlockScopeVarWithLet); // ❌ ReferenceError
 
-  console.log('------- globalFunction end -------');
+  console.log('%c------- globalFunction end -------', brakeConsoleStyle);
 }
 
 // block scope (ES6+) in currly brackets
@@ -167,7 +184,7 @@ function globalFunction() {
   console.log('block scope. blockScopeVarWithLet:', blockScopeVarWithLet); // ✅ accessible
 
   function blockFunction() {
-    console.log('------- blockFunction start & end -------');
+    console.log('%c------- blockFunction start & end -------', brakeConsoleStyle);
   }
 }
 
@@ -189,9 +206,9 @@ console.log('global scope. functionVarWithoutDeclarationOperator:', functionVarW
 // console.log('global scope. functionBlockScopeVarWithVar:', functionBlockScopeVarWithVar); // ❌ ReferenceError
 // console.log("global scope. functionBlockScopeVarWithLet:", functionBlockScopeVarWithLet); // ❌ ReferenceError
 
-console.log('*************** Checking scopes. Advanced. END ***************');
-
 /* ------------------ CLOSURE ------------------ */
+
+console.log('%c*************** CLOSURE ***************', headerConsoleStyle);
 
 // const closureGenerator_Outer = function(count) {
 //     return function increment_Closure_Inner() {
@@ -219,6 +236,8 @@ console.log('*************** Checking scopes. Advanced. END ***************');
 
 /* ------------------ CLOSURE with complex variables ------------------ */
 
+console.log('%c*************** CLOSURE with complex variables ***************', headerConsoleStyle);
+
 // let a = 1;
 // let b = 2;
 
@@ -243,3 +262,5 @@ console.log('*************** Checking scopes. Advanced. END ***************');
 // fn();
 
 /* ------------------------------------ */
+
+console.log('%c*************** END ***************', headerConsoleStyle);
