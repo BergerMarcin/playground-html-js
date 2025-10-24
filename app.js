@@ -331,7 +331,7 @@ StaticUser.staticSayHi(); // `undefined` as static context/`this` (i.e. of `Stat
 
 var userName = 'Global Static User';
 StaticUser.staticSayHi(); // `undefined` as static context/`this` (i.e. of `StaticUser` class/constructor) has no property `userName` and not taking `userName` from global
-StaticUser.staticSayHi.call({userName: 'Some Static User'}); // "Some Static User" as `this` is the object passed in `call` which has property `userName` of value "Some Static User"
+StaticUser.staticSayHi.call({ userName: 'Some Static User' }); // "Some Static User" as `this` is the object passed in `call` which has property `userName` of value "Some Static User"
 
 const staticSayHi = StaticUser.staticSayHi; // static context/`this` (i.e. of `StaticUser` class) was lost here
 staticSayHi(); // `undefined` as class methods are not taking `this` from the nearest scope/context. `this` is "hermetized".
