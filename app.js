@@ -126,11 +126,15 @@ logFirstName.bind(secondPerson)(); // "Vishnu"
 
 /* ------------------ `this` in calls of object`s method as regular function ------------------ */
 
-console.log('%c*************** `this` in calls of object`s method as regular function ***************', headerConsoleStyle);
+console.log(
+  '%c*************** `this` in calls of object`s method as regular function ***************',
+  headerConsoleStyle
+);
 
 const objectPerson = {
   objectFirstName: 'Ram',
-  objectLogFirstName() { // the same as: `objectLogFirstName: function () {`
+  objectLogFirstName() {
+    // the same as: `objectLogFirstName: function () {`
     console.log(this?.objectFirstName);
   },
 };
@@ -143,8 +147,8 @@ const objectSecondPerson = {
   objectFirstName: 'Vishnu',
 };
 
-const freeObjectLogFirstName = objectPerson.objectLogFirstName; // `this` of object was lost here 
-freeObjectLogFirstName(); // `undefined` (as in sloppy mode as no `objectFirstName` in global scope; as in strict mode global `this` is `undefined`) 
+const freeObjectLogFirstName = objectPerson.objectLogFirstName; // `this` of object was lost here
+freeObjectLogFirstName(); // `undefined` (as in sloppy mode as no `objectFirstName` in global scope; as in strict mode global `this` is `undefined`)
 var objectFirstName = 'Vijay';
 freeObjectLogFirstName(); // "Vijay" in sloppy mode (as `this` is taking from the nearest scope which is global scope); undefined in strict mode
 
@@ -161,11 +165,15 @@ objectFirstPerson.objectLogFirstName(); // "Deepak"
 
 /* ------------------ `this` in calls of object`s method as arrow function ------------------ */
 
-console.log('%c*************** `this` in calls of object`s method as arrow function ***************', headerConsoleStyle);
+console.log(
+  '%c*************** `this` in calls of object`s method as arrow function ***************',
+  headerConsoleStyle
+);
 
 const objectPersonArrow = {
   objectFirstNameArrow: 'RamArrow',
-  objectLogFirstNameArrow: () => { // arrow function does not have its own `this`, it takes `this` from the surrounding/nearest LEXICAL context
+  objectLogFirstNameArrow: () => {
+    // arrow function does not have its own `this`, it takes `this` from the surrounding/nearest LEXICAL context
     console.log(this?.objectFirstNameArrow);
   },
 };
@@ -179,7 +187,7 @@ const objectSecondPersonArrow = {
 };
 
 const freeObjectLogFirstNameArrow = objectPersonArrow.objectLogFirstNameArrow; // `this` of object was lost here as arrow function is using outside lexical scope from definition place and object has not literally `this`
-freeObjectLogFirstNameArrow(); // `undefined` (as in sloppy mode as no `objectFirstNameArrow` in global scope; as in strict mode global `this` is `undefined`) 
+freeObjectLogFirstNameArrow(); // `undefined` (as in sloppy mode as no `objectFirstNameArrow` in global scope; as in strict mode global `this` is `undefined`)
 var objectFirstNameArrow = 'VijayArrow';
 freeObjectLogFirstNameArrow(); // "VijayArrow" in sloppy mode (as `this` is taking from the surrounding/nearest LEXICAL scope which is global scope); `undefined` in strict mode (as global `this` is `undefined`)
 
@@ -196,7 +204,10 @@ objectFirstPersonArrow.objectLogFirstNameArrow(); // "Another VijayArrow" in slo
 
 /* ------------------ `this` in calls of object`s method as regular function, object created with function constructor ------------------ */
 
-console.log('%c*************** `this` in calls of object`s method as regular function, object created with function constructor ***************', headerConsoleStyle);
+console.log(
+  '%c*************** `this` in calls of object`s method as regular function, object created with function constructor ***************',
+  headerConsoleStyle
+);
 
 function PersonFunctionConstructor(personName) {
   this.personName = personName;
@@ -216,7 +227,7 @@ person2.sayPersonName.apply(person1); // reusage; "Person One"
 person2.sayPersonName.bind(person1)(); // reusage; "Person One"
 
 const sayPersonNameToThis = person1.sayPersonName; // `this` of object was lost here
-sayPersonNameToThis(); // `undefined` (as in sloppy mode no `personName` in global scope; as in strict mode global `this` is `undefined`) 
+sayPersonNameToThis(); // `undefined` (as in sloppy mode no `personName` in global scope; as in strict mode global `this` is `undefined`)
 sayPersonNameToThis.call(person2); // reusage; "Person Two"
 var personName = 'Global Person'; // in sloppy mode `this` of global scope got property `personName` (hoisted to the top of code) and assign value "Global Person" here; in strict mode `this` of global scope is `undefined`
 sayPersonNameToThis(); // reusage; "Global Person" in sloppy mode (`this` in method of object created by function instance created via `new` is taken from the nearest scope by the default, contrary to class instance method); `undefined` in strict mode
@@ -226,7 +237,10 @@ sayPersonNameToThis(); // reusage; "Another Global Person" in sloppy mode (as `t
 
 /* ------------------ `this` in calls of object`s method as arrow function, object created with function constructor ------------------ */
 
-console.log('%c*************** `this` in calls of object`s method as arrow function, object created with function constructor ***************', headerConsoleStyle);
+console.log(
+  '%c*************** `this` in calls of object`s method as arrow function, object created with function constructor ***************',
+  headerConsoleStyle
+);
 
 function PersonFunctionConstructorArrow(personNameArrow) {
   this.personNameArrow = personNameArrow;
@@ -245,8 +259,8 @@ personArrow2.sayPersonNameArrow.call(personArrow1); // "Person Two Arrow" as `ca
 personArrow2.sayPersonNameArrow.apply(personArrow1); // "Person Two Arrow" as `apply` is not working as arrow function has not own `this`
 personArrow2.sayPersonNameArrow.bind(personArrow1)(); // "Person Two Arrow" as `bind` is not working as arrow function has not own `this`
 
-const sayPersonNameToThisArrow = personArrow1.sayPersonNameArrow; // `this` of object was NOT lost here, as arrow function behaves as closure (so context is taken from place of declaration) and `this` of/in arrow function is taken from the nearest surrounding/lexical scope which is function constructor's scope where `this` is the instance created with `new` 
-sayPersonNameToThisArrow(); // "Person One Arrow" as arrow function is working as closure (so `this` is taken from outside scope acc. lexical, so from declaration place) 
+const sayPersonNameToThisArrow = personArrow1.sayPersonNameArrow; // `this` of object was NOT lost here, as arrow function behaves as closure (so context is taken from place of declaration) and `this` of/in arrow function is taken from the nearest surrounding/lexical scope which is function constructor's scope where `this` is the instance created with `new`
+sayPersonNameToThisArrow(); // "Person One Arrow" as arrow function is working as closure (so `this` is taken from outside scope acc. lexical, so from declaration place)
 sayPersonNameToThisArrow.call(personArrow2); // "Person One Arrow" as `call` is not working as arrow function has not own `this`
 var personNameArrow = 'Global Person Arrow'; // in sloppy mode `this` of global scope got property `personNameArrow` (hoisted to the top of code) and assign value "Global Person Arrow" here; in strict mode `this` of global scope is `undefined`
 sayPersonNameToThisArrow(); // "Person One Arrow" as arrow function is working as closure (so `this` is taken from outside scope acc. lexical, so from declaration place)
@@ -254,9 +268,9 @@ sayPersonNameToThisArrow.call(this); // "Person One Arrow" as `call` is not work
 personNameArrow = 'Another Global Person Arrow'; // in sloppy mode `this`'s property `personNameArrow` gets/assigns value `Another Global Person Arrow` here; in strict mode `this` of global scope is `undefined`
 sayPersonNameToThisArrow(); // "Person One Arrow" as arrow function is working as closure (so `this` is taken from outside scope acc. lexical, so from declaration place)
 
-/* ------------------ `this` in class intance method ------------------ */
+/* ------------------ `this` in calls of class intance method ------------------ */
 
-console.log('%c*************** `this` in class intance method ***************', headerConsoleStyle);
+console.log('%c*************** `this` in calls of class intance method ***************', headerConsoleStyle);
 
 class User {
   constructor(userName) {
@@ -295,9 +309,9 @@ john.constructor.userName = 'George'; // define property `userName` at class lev
 john.constructor.sayHi?.(); // error as sayHi is not function on constructor level (it is not static method)
 john.sayHi(); // "John" as `this` is `john` instance which has property `userName` of value "John"
 
-/* ------------------ `this` in class static method ------------------ */
+/* ------------------ `this` in class class static method ------------------ */
 
-console.log('%c*************** `this` in class static method ***************', headerConsoleStyle);
+console.log('%c*************** `this` in calls of class static method ***************', headerConsoleStyle);
 
 class StaticUser {
   constructor(userName) {
