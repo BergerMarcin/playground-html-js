@@ -97,9 +97,9 @@ console.log('%c*************** this & globalThis ***************', headerConsole
 console.log('Global scope. this:', this);
 console.log('Global scope. globalThis:', globalThis);
 
-/* ------------------ this in calls of "free" function ------------------ */
+/* ------------------ `this` in calls of "free" regular function ------------------ */
 
-console.log('%c*************** this in calls of "free" function ***************', headerConsoleStyle);
+console.log('%c*************** `this` in calls of "free" regular function ***************', headerConsoleStyle);
 
 function logFirstName() {
   console.log(this?.firstName);
@@ -117,20 +117,20 @@ const secondPerson = {
 
 logFirstName(); // undefined always in strict mode, globalThis.firstName in sloppy mode (here also undefined)
 var firstName = 'Vijay';
-logFirstName(); // Vijay in sloppy mode, undefined in strict mode
-firstPerson.logFirstName(); // Deepak
-secondPerson.logFirstName(); // Vishnu
-logFirstName.call({ firstName: 'Ajay' }); // Ajay
-logFirstName.apply(firstPerson); // Deepak
-logFirstName.bind(secondPerson)(); // Vishnu
+logFirstName(); // "Vijay" in sloppy mode, undefined in strict mode
+firstPerson.logFirstName(); // "Deepak"
+secondPerson.logFirstName(); // "Vishnu"
+logFirstName.call({ firstName: 'Ajay' }); // "Ajay"
+logFirstName.apply(firstPerson); // "Deepak"
+logFirstName.bind(secondPerson)(); // "Vishnu"
 
-/* ------------------ this in calls of "free" function ------------------ */
+/* ------------------ `this` in calls of object`s method as regular function ------------------ */
 
-console.log('%c*************** this in calls of object`s method/function ***************', headerConsoleStyle);
+console.log('%c*************** `this` in calls of object`s method as regular function ***************', headerConsoleStyle);
 
 const objectPerson = {
   objectFirstName: 'Ram',
-  objectLogFirstName() {
+  objectLogFirstName() { // the same as: `objectLogFirstName: function () {`
     console.log(this?.objectFirstName);
   },
 };
@@ -143,19 +143,120 @@ const objectSecondPerson = {
   objectFirstName: 'Vishnu',
 };
 
-objectPerson.objectLogFirstName(); // Ram
+const freeObjectLogFirstName = objectPerson.objectLogFirstName; // `this` of object was lost here 
+freeObjectLogFirstName(); // `undefined` (as in sloppy mode as no `objectFirstName` in global scope; as in strict mode global `this` is `undefined`) 
 var objectFirstName = 'Vijay';
-objectPerson.objectLogFirstName(); // Ram
-objectPerson.objectLogFirstName.call(this); // Vijay in sloppy mode, undefined in strict mode
-objectPerson.objectLogFirstName.call({ objectFirstName: 'Ajay' }); // Ajay
-objectPerson.objectLogFirstName.apply(objectFirstPerson); // Deepak
-objectPerson.objectLogFirstName.bind(objectSecondPerson)(); // Vishnu
+freeObjectLogFirstName(); // "Vijay" in sloppy mode (as `this` is taking from the nearest scope which is global scope); undefined in strict mode
+
+objectPerson.objectLogFirstName(); // "Ram"
+objectFirstName = 'Another Vijay';
+objectPerson.objectLogFirstName(); // "Ram"
+objectPerson.objectLogFirstName.call(this); // "Another Vijay" in sloppy mode, undefined in strict mode
+objectPerson.objectLogFirstName.call({ objectFirstName: 'Ajay' }); // "Ajay"
+objectPerson.objectLogFirstName.apply(objectFirstPerson); // "Deepak"
+objectPerson.objectLogFirstName.bind(objectSecondPerson)(); // "Vishnu"
+
 objectFirstPerson.objectLogFirstName = objectPerson.objectLogFirstName;
-objectFirstPerson.objectLogFirstName(); // Deepak
+objectFirstPerson.objectLogFirstName(); // "Deepak"
 
-/* ------------------ this in class intance ------------------ */
+/* ------------------ `this` in calls of object`s method as arrow function ------------------ */
 
-console.log('%c*************** this in class intance ***************', headerConsoleStyle);
+console.log('%c*************** `this` in calls of object`s method as arrow function ***************', headerConsoleStyle);
+
+const objectPersonArrow = {
+  objectFirstNameArrow: 'RamArrow',
+  objectLogFirstNameArrow: () => { // arrow function does not have its own `this`, it takes `this` from the surrounding/nearest LEXICAL context
+    console.log(this?.objectFirstNameArrow);
+  },
+};
+
+const objectFirstPersonArrow = {
+  objectFirstNameArrow: 'DeepakArrow',
+};
+
+const objectSecondPersonArrow = {
+  objectFirstNameArrow: 'VishnuArrow',
+};
+
+const freeObjectLogFirstNameArrow = objectPersonArrow.objectLogFirstNameArrow; // `this` of object was lost here as arrow function is using outside lexical scope from definition place and object has not literally `this`
+freeObjectLogFirstNameArrow(); // `undefined` (as in sloppy mode as no `objectFirstNameArrow` in global scope; as in strict mode global `this` is `undefined`) 
+var objectFirstNameArrow = 'VijayArrow';
+freeObjectLogFirstNameArrow(); // "VijayArrow" in sloppy mode (as `this` is taking from the surrounding/nearest LEXICAL scope which is global scope); `undefined` in strict mode (as global `this` is `undefined`)
+
+objectPersonArrow.objectLogFirstNameArrow(); // "VijayArrow" in sloppy mode; `undefined` in strict mode (as global `this` is `undefined`)
+objectFirstNameArrow = 'Another VijayArrow';
+objectPersonArrow.objectLogFirstNameArrow(); // "Another VijayArrow" in sloppy mode (as `this` is taking from the surrounding/nearest LEXICAL scope which is global scope); `undefined` in strict mode (as global `this` is `undefined`)
+objectPersonArrow.objectLogFirstNameArrow.call(this); // "Another VijayArrow" in sloppy mode; `undefined` in strict mode
+objectPersonArrow.objectLogFirstNameArrow.call({ objectFirstNameArrow: 'AjayArrow' }); // "Another VijayArrow" in sloppy mode; `undefined` in strict mode
+objectPersonArrow.objectLogFirstNameArrow.apply(objectFirstPersonArrow); // "Another VijayArrow" in sloppy mode; `undefined` in strict mode
+objectPersonArrow.objectLogFirstNameArrow.bind(objectSecondPersonArrow)(); // "Another VijayArrow" in sloppy mode; `undefined` in strict mode
+
+objectFirstPersonArrow.objectLogFirstNameArrow = objectPersonArrow.objectLogFirstNameArrow;
+objectFirstPersonArrow.objectLogFirstNameArrow(); // "Another VijayArrow" in sloppy mode, `undefined` in strict mode
+
+/* ------------------ `this` in calls of object`s method as regular function, object created with function constructor ------------------ */
+
+console.log('%c*************** `this` in calls of object`s method as regular function, object created with function constructor ***************', headerConsoleStyle);
+
+function PersonFunctionConstructor(personName) {
+  this.personName = personName;
+
+  this.sayPersonName = function () {
+    console.log(this?.personName); // ? to avoid error when `this` is `undefined` (especially in strict mode)
+  };
+}
+
+const person1 = new PersonFunctionConstructor('Person One'); // object created with function constructor (new instance of function constructor)
+person1.sayPersonName(); // "Person One"
+const person2 = new PersonFunctionConstructor('Person Two'); // next object created with function constructor (new instance of function constructor)
+person2.sayPersonName(); // "Person Two"
+
+person2.sayPersonName.call(person1); // reusage; "Person One"
+person2.sayPersonName.apply(person1); // reusage; "Person One"
+person2.sayPersonName.bind(person1)(); // reusage; "Person One"
+
+const sayPersonNameToThis = person1.sayPersonName; // `this` of object was lost here
+sayPersonNameToThis(); // `undefined` (as in sloppy mode no `personName` in global scope; as in strict mode global `this` is `undefined`) 
+sayPersonNameToThis.call(person2); // reusage; "Person Two"
+var personName = 'Global Person'; // in sloppy mode `this` of global scope got property `personName` (hoisted to the top of code) and assign value "Global Person" here; in strict mode `this` of global scope is `undefined`
+sayPersonNameToThis(); // reusage; "Global Person" in sloppy mode (`this` in method of object created by function instance created via `new` is taken from the nearest scope by the default, contrary to class instance method); `undefined` in strict mode
+sayPersonNameToThis.call(this); // reusage; "Global Person" in sloppy mode (as `this` has property `personName` with value "Global Person" and method is taken from the nearest scope by the default, contrary to class instance method); `undefined` in strict mode
+personName = 'Another Global Person'; // in sloppy mode `this`'s property `personName` gets/assigns value `Another Global Person` here; in strict mode `this` of global scope is `undefined`
+sayPersonNameToThis(); // reusage; "Another Global Person" in sloppy mode (as `this` has property `personName` with value `Another Global Person`); `undefined` in strict mode
+
+/* ------------------ `this` in calls of object`s method as arrow function, object created with function constructor ------------------ */
+
+console.log('%c*************** `this` in calls of object`s method as arrow function, object created with function constructor ***************', headerConsoleStyle);
+
+function PersonFunctionConstructorArrow(personNameArrow) {
+  this.personNameArrow = personNameArrow;
+
+  this.sayPersonNameArrow = () => {
+    console.log(this?.personNameArrow); // ? to avoid error when `this` is `undefined` (especially in strict mode)
+  };
+}
+
+const personArrow1 = new PersonFunctionConstructorArrow('Person One Arrow'); // object created with function constructor (new instance of function constructor)
+personArrow1.sayPersonNameArrow(); // "Person One Arrow"
+const personArrow2 = new PersonFunctionConstructorArrow('Person Two Arrow'); // next object created with function constructor (new instance of function constructor)
+personArrow2.sayPersonNameArrow(); // "Person Two Arrow"
+
+personArrow2.sayPersonNameArrow.call(personArrow1); // "Person Two Arrow" as `call` is not working as arrow function has not own `this`
+personArrow2.sayPersonNameArrow.apply(personArrow1); // "Person Two Arrow" as `apply` is not working as arrow function has not own `this`
+personArrow2.sayPersonNameArrow.bind(personArrow1)(); // "Person Two Arrow" as `bind` is not working as arrow function has not own `this`
+
+const sayPersonNameToThisArrow = personArrow1.sayPersonNameArrow; // `this` of object was NOT lost here, as arrow function behaves as closure (so context is taken from place of declaration) and `this` of/in arrow function is taken from the nearest surrounding/lexical scope which is function constructor's scope where `this` is the instance created with `new` 
+sayPersonNameToThisArrow(); // "Person One Arrow" as arrow function is working as closure (so `this` is taken from outside scope acc. lexical, so from declaration place) 
+sayPersonNameToThisArrow.call(personArrow2); // "Person One Arrow" as `call` is not working as arrow function has not own `this`
+var personNameArrow = 'Global Person Arrow'; // in sloppy mode `this` of global scope got property `personNameArrow` (hoisted to the top of code) and assign value "Global Person Arrow" here; in strict mode `this` of global scope is `undefined`
+sayPersonNameToThisArrow(); // "Person One Arrow" as arrow function is working as closure (so `this` is taken from outside scope acc. lexical, so from declaration place)
+sayPersonNameToThisArrow.call(this); // "Person One Arrow" as `call` is not working as arrow function has not own `this`
+personNameArrow = 'Another Global Person Arrow'; // in sloppy mode `this`'s property `personNameArrow` gets/assigns value `Another Global Person Arrow` here; in strict mode `this` of global scope is `undefined`
+sayPersonNameToThisArrow(); // "Person One Arrow" as arrow function is working as closure (so `this` is taken from outside scope acc. lexical, so from declaration place)
+
+/* ------------------ `this` in class intance method ------------------ */
+
+console.log('%c*************** `this` in class intance method ***************', headerConsoleStyle);
 
 class User {
   constructor(userName) {
@@ -177,17 +278,26 @@ bob.sayHi.apply(alice); // reusage; "Alice"
 bob.sayHi.bind(alice)(); // reusage; "Alice"
 
 const sayHiToThis = alice.sayHi; // `this` of class instance was lost here
-sayHiToThis(); // reusage; `undefined` as connection to `this` of class instance was lost in above line (note: `this` of class instance is totally hermetized)
+sayHiToThis(); // reusage; `undefined` as connection to `this` of class instance was lost in above line AND class methods are not taking `this` from the nearest scope/context
 sayHiToThis.call(bob); // reusage; "Bob"
+alice.sayHiToThis?.(); // error as `sayHiToThis` is not function on class instance level
+
 var userName = 'Global User'; // in sloppy mode `this` of global scope got property `userName` (hoisted to the top of code) and assign value `Global User` here; in strict mode `this` of global scope is `undefined`
-sayHiToThis(); // reusage; `undefined` as `this` of class instance is totally hermetized (note: here `this` in sloppy mode is global scope and has property `userName` of assign value line above `Global User` but ... `this` of global scope is not accessible in class instance)
+sayHiToThis(); // `undefined` as class methods are not taking `this` from the nearest scope/context
 sayHiToThis.call(this); // reusage; "Global User" in sloppy mode (as `this` has property `userName` with value "Global User"); `undefined` in strict mode
+bob.sayHi.bind(this)(); // reusage; "Global User"
 userName = 'Another Global User'; // in sloppy mode `this`'s property `userName` gets/assigns value "Another Global User" here; in strict mode `this` of global scope is `undefined`
 sayHiToThis.call(this); // reusage; "Another Global User" in sloppy mode (as `this` has property `userName` with value "Another Global User"); `undefined` in strict mode
 
-/* ------------------ this in class static method ------------------ */
+const john = new User('John');
+john.sayHi(); // "John"
+john.constructor.userName = 'George'; // define property `userName` at class level via class instance's constructor
+john.constructor.sayHi?.(); // error as sayHi is not function on constructor level (it is not static method)
+john.sayHi(); // "John" as `this` is `john` instance which has property `userName` of value "John"
 
-console.log('%c*************** this in class static method ***************', headerConsoleStyle);
+/* ------------------ `this` in class static method ------------------ */
+
+console.log('%c*************** `this` in class static method ***************', headerConsoleStyle);
 
 class StaticUser {
   constructor(userName) {
@@ -205,7 +315,15 @@ charlie.constructor.staticSayHi(); // `undefined` as `this` is `StaticUser` clas
 
 StaticUser.staticSayHi(); // `undefined` as `this` is `StaticUser` class which has no property `userName` of its constructor
 
-StaticUser.userName = 'Static User';  // define property `userName` at class level and assign value "Static User"
+var userName = 'Global Static User';
+StaticUser.staticSayHi(); // `undefined` as `this` is `StaticUser` class which has no property `userName` and not taking `userName` from global
+const staticSayHi = StaticUser.staticSayHi; // `this` of class was lost here
+staticSayHi(); // `undefined` as connection to `this` of class was lost in above line AND class methods are not taking `this` from the nearest scope/context
+staticSayHi.call(this); // "Global Static User" in sloppy mode (as `this` has property `userName` with value "Global Static User"); `undefined` in strict mode
+
+StaticUser.staticSayHi.bind(this)(); // "Global Static User" in sloppy mode (as `this` has property `userName` with value "Global Static User"); `undefined` in strict mode
+
+StaticUser.userName = 'Static User'; // define property `userName` at class level and assign value "Static User"
 StaticUser.staticSayHi(); // "Static User" as `this` is `StaticUser` class which has property `userName` of value "Static User"
 
 charlie.constructor.userName = 'Another Charlie'; // define property `userName` at class level via class instance's constructor. In fact reassign value to "Another Charlie"
@@ -213,38 +331,8 @@ charlie.constructor.staticSayHi(); // "Another Charlie" as `this` is `StaticUser
 
 StaticUser.staticSayHi(); // "Another Charlie" as `this` is `StaticUser` class which has property `userName` from constructor
 
-StaticUser.userName = 'Another Static User';  // reassign value to "Another Static User" of property `userName` at class level
+StaticUser.userName = 'Another Static User'; // reassign value to "Another Static User" of property `userName` at class level
 StaticUser.staticSayHi(); // "Another Static User" as `this` is `StaticUser` class which has property `userName` of value "Static User"
-
-/* ------------------ this in object created with function constructor ------------------ */
-
-console.log('%c*************** this in object created with function constructor ***************', headerConsoleStyle);
-
-function PersonFunctionConstructor(personName) {
-  this.personName = personName;
-
-  this.sayPersonName = function () {
-    console.log(this?.personName); // ? to avoid error when `this` is `undefined` (especially in strict mode)
-  };
-}
-
-const person1 = new PersonFunctionConstructor('Person One'); // object created with function constructor (new instance of function constructor)
-person1.sayPersonName(); // "Person One"
-const person2 = new PersonFunctionConstructor('Person Two'); // next object created with function constructor (new instance of function constructor)
-person2.sayPersonName(); // "Person Two"
-
-person2.sayPersonName.call(person1); // reusage; "Person One"
-person2.sayPersonName.apply(person1); // reusage; "Person One"
-person2.sayPersonName.bind(person1)(); // reusage; "Person One"
-
-const sayPersonNameToThis = person1.sayPersonName; // `this` of object was lost here
-sayPersonNameToThis(); // reusage; `undefined` as connection to `this` of object was lost in above line (note: `this` of function constructor instance is totally hermetized)
-sayPersonNameToThis.call(person2); // reusage; "Person Two"
-var personName = 'Global Person'; // in sloppy mode `this` of global scope got property `personName` (hoisted to the top of code) and assign value "Global Person" here; in strict mode `this` of global scope is `undefined`
-sayPersonNameToThis(); // reusage; "Global Person" in sloppy mode (`this` of object created by function instance created via `new` is not hermetized contrary to `this` of class instance); `undefined` in strict mode
-sayPersonNameToThis.call(this); // reusage; "Global Person" in sloppy mode (as `this` has property `personName` with value "Global Person" and object is not totaly hermetized contrary to class instance); `undefined` in strict mode
-personName = 'Another Global Person'; // in sloppy mode `this`'s property `personName` gets/assigns value `Another Global Person` here; in strict mode `this` of global scope is `undefined`
-sayPersonNameToThis.call(this); // reusage; "Another Global Person" in sloppy mode (as `this` has property `personName` with value `Global Person`); `undefined` in strict mode
 
 /* ------------------ CHAIN CALLS ------------------ */
 
