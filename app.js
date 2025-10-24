@@ -305,7 +305,7 @@ sayHiToThis.call(this); // reusage; "Another Global User" in sloppy mode (as `th
 
 const john = new User('John');
 john.sayHi(); // "John"
-john.constructor.userName = 'George'; // define property `userName` at class level via class instance's constructor
+john.constructor.userName = 'George'; // define property `userName` at static context i.e. at class/constructor level via class instance's constructor
 john.constructor.sayHi?.(); // error as sayHi is not function on constructor level (it is not static method)
 john.sayHi(); // "John" as `this` is `john` instance which has property `userName` of value "John"
 
@@ -322,28 +322,30 @@ class StaticUser {
   }
 }
 
-StaticUser.staticSayHi(); // `undefined` as `this` is `StaticUser` class which has no property `userName` (note: property `userName` should be defined at class property OR at class instance constructor)
+StaticUser.staticSayHi(); // `undefined` as static context/`this` (i.e. of `StaticUser` class/constructor) has no property `userName` (note: property `userName` should be defined at class/constructor level)
 
 const charlie = new StaticUser('Charlie');
-charlie.constructor.staticSayHi(); // `undefined` as `this` is `StaticUser` class which has no property `userName`
+charlie.constructor.staticSayHi(); // `undefined` as static context/`this` (i.e. of `StaticUser` class/constructor) has no property `userName`
 
-StaticUser.staticSayHi(); // `undefined` as `this` is `StaticUser` class which has no property `userName` of its constructor
+StaticUser.staticSayHi(); // `undefined` as static context/`this` (i.e. of `StaticUser` class/constructor) has no property `userName`
 
 var userName = 'Global Static User';
-StaticUser.staticSayHi(); // `undefined` as `this` is `StaticUser` class which has no property `userName` and not taking `userName` from global
-const staticSayHi = StaticUser.staticSayHi; // `this` of class was lost here
-staticSayHi(); // `undefined` as connection to `this` of class was lost in above line AND class methods are not taking `this` from the nearest scope/context
+StaticUser.staticSayHi(); // `undefined` as static context/`this` (i.e. of `StaticUser` class/constructor) has no property `userName` and not taking `userName` from global
+StaticUser.staticSayHi.call({userName: 'Some Static User'}); // "Some Static User" as `this` is the object passed in `call` which has property `userName` of value "Some Static User"
+
+const staticSayHi = StaticUser.staticSayHi; // static context/`this` (i.e. of `StaticUser` class) was lost here
+staticSayHi(); // `undefined` as class methods are not taking `this` from the nearest scope/context. `this` is "hermetized".
 staticSayHi.call(this); // "Global Static User" in sloppy mode (as `this` has property `userName` with value "Global Static User"); `undefined` in strict mode
 
 StaticUser.staticSayHi.bind(this)(); // "Global Static User" in sloppy mode (as `this` has property `userName` with value "Global Static User"); `undefined` in strict mode
 
-StaticUser.userName = 'Static User'; // define property `userName` at class level and assign value "Static User"
-StaticUser.staticSayHi(); // "Static User" as `this` is `StaticUser` class which has property `userName` of value "Static User"
+StaticUser.userName = 'Static User'; // define property `userName` at static context / at class level and assign value "Static User"
+StaticUser.staticSayHi(); // "Static User" as static context/`this` (i.e. of `StaticUser` class) now has property `userName` of value "Static User"
 
-charlie.constructor.userName = 'Another Charlie'; // define property `userName` at class level via class instance's constructor. In fact reassign value to "Another Charlie"
-charlie.constructor.staticSayHi(); // "Another Charlie" as `this` is `StaticUser` class which has property `userName` of value "Another Charlie"
+charlie.constructor.userName = 'Another Charlie'; // define property `userName` at static context / at class level via class instance's constructor. In fact reassign value to "Another Charlie"
+charlie.constructor.staticSayHi(); // "Another Charlie" as context/`this` is static/class `StaticUser` and ithas property `userName` of value "Another Charlie"
 
-StaticUser.staticSayHi(); // "Another Charlie" as `this` is `StaticUser` class which has property `userName` from constructor
+StaticUser.staticSayHi(); // "Another Charlie" as static `this` is `StaticUser` class which has property `userName` from constructor
 
 StaticUser.userName = 'Another Static User'; // reassign value to "Another Static User" of property `userName` at class level
 StaticUser.staticSayHi(); // "Another Static User" as `this` is `StaticUser` class which has property `userName` of value "Static User"
