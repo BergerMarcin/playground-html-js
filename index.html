@@ -29,6 +29,12 @@
         overflow: auto;
       }
     </style>
+
+    <!-- *sloppy mode* / non strict mode & *async* loading strategy -->
+    <!-- <script async src="app.js"></script> -->
+
+    <!-- *strict mode* & *defer* loading strategy as it is *module* -->
+    <script type="module" src="app.js"></script>
   </head>
   <body>
     <main class="card">
@@ -55,11 +61,5 @@
         <p>Open the browser console for more debug logs (F12 / DevTools).</p>
       </footer>
     </main>
-
-    <!-- sloppy mode / non strict mode -->
-    <script src="app.js"></script>
-
-    <!-- strict mode as it is module -->
-    <!-- <script type="module" src="app.js"></script> -->
   </body>
 </html>

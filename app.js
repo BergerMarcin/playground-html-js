@@ -39,6 +39,10 @@ function handleToggleColor() {
 
 // globalFunction of a small initialization function. You could also fetch data here.
 function init() {
+  console.log(
+    '%c🚀🚀🚀 Start init 🚀🚀🚀',
+    'background: #1dd1e9ff; color: #000; font-size: 20px; padding: 2px 8px; border-radius: 4px;'
+  );
   showTimeBtn.addEventListener('click', handleShowTime);
   toggleColorBtn.addEventListener('click', handleToggleColor);
 
@@ -343,7 +347,9 @@ StaticUser.staticSayHi.bind(this)(); // "Global Static User" in sloppy mode (as 
 
 StaticUser.userName = 'Static User'; // define property `userName` at static context / at class level and assign value "Static User"
 StaticUser.staticSayHi(); // "Static User" as static context/`this` (i.e. of `StaticUser` class) now has property `userName` of value "Static User"
-StaticUser.staticSayHiToHoney = function () {console.log(`Hi ${this?.userName}, honey!`)}; // define new static method at class level
+StaticUser.staticSayHiToHoney = function () {
+  console.log(`Hi ${this?.userName}, honey!`);
+}; // define new static method at class level
 StaticUser.staticSayHiToHoney(); // "Hi Static User, honey!" as static context/`this` (i.e. of `StaticUser` class) now has static method `staticSayHiToHoney` and property `userName` of value "Static User"
 
 charlie.constructor.userName = 'Another Charlie'; // define property `userName` at static context / at class level via class instance's constructor. In fact reassign value to "Another Charlie"
