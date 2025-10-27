@@ -186,6 +186,8 @@ const objectSecondPersonArrow = {
   objectFirstNameArrow: 'VishnuArrow',
 };
 
+objectPersonArrow.objectLogFirstNameArrow(); // `undefined` in strict mode; "VijayArrow" in sloppy mode (as `this` is taking from the surrounding/nearest LEXICAL scope which is global scope)
+
 const freeObjectLogFirstNameArrow = objectPersonArrow.objectLogFirstNameArrow; // `this` of object was lost here as arrow function is using outside lexical scope from definition place and object has not literally `this`
 freeObjectLogFirstNameArrow(); // `undefined` (as in sloppy mode as no `objectFirstNameArrow` in global scope; as in strict mode global `this` is `undefined`)
 var objectFirstNameArrow = 'VijayArrow';
@@ -318,7 +320,7 @@ class StaticUser {
     this.userName = userName;
   }
   static staticSayHi() {
-    console.log(this?.userName); // ? to avoid error when `this` is `undefined` (especially in strict mode)
+    console.log(this?.userName); // `?` to avoid error when `this` is `undefined` (especially in strict mode). Note: `this` in static method is class/constructor itself i.e. it is static context
   }
 }
 
@@ -341,9 +343,12 @@ StaticUser.staticSayHi.bind(this)(); // "Global Static User" in sloppy mode (as 
 
 StaticUser.userName = 'Static User'; // define property `userName` at static context / at class level and assign value "Static User"
 StaticUser.staticSayHi(); // "Static User" as static context/`this` (i.e. of `StaticUser` class) now has property `userName` of value "Static User"
+StaticUser.staticSayHiToHoney = function () {console.log(`Hi ${this?.userName}, honey!`)}; // define new static method at class level
+StaticUser.staticSayHiToHoney(); // "Hi Static User, honey!" as static context/`this` (i.e. of `StaticUser` class) now has static method `staticSayHiToHoney` and property `userName` of value "Static User"
 
 charlie.constructor.userName = 'Another Charlie'; // define property `userName` at static context / at class level via class instance's constructor. In fact reassign value to "Another Charlie"
 charlie.constructor.staticSayHi(); // "Another Charlie" as context/`this` is static/class `StaticUser` and ithas property `userName` of value "Another Charlie"
+charlie.constructor.staticSayHiToHoney(); // "Hi Static User, honey!" as static context/`this` (i.e. of `StaticUser` class) now has static method `staticSayHiToHoney` and property `userName` of value "Another Charlie"
 
 StaticUser.staticSayHi(); // "Another Charlie" as static `this` is `StaticUser` class which has property `userName` from constructor
 
