@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Example: HTML using external JS</title>
+    <title>HTML JS playground</title>
     <link rel="stylesheet" href="styles.css">
 
     <!-- *sloppy mode* / non strict mode & *async* loading strategy -->
@@ -18,8 +18,7 @@
   </head>
   <body>
     <main class="card">
-      <h1>index.html — external <code>app.js, ...</code> demo</h1>
-
+      <h1>HTML JS playground with JS: <code>app.js, ...</code></h1>
       <p>This page demonstrates using an external JavaScript file (<code>app.js, ...</code>).</p>
 
       <section>
@@ -34,9 +33,9 @@
       </section>
 
       <section>
-        <h2>Console output with <u>check chain calls, scopes, closures</u></h2>
+        <h2>Console output with of App.js (<u>check chain calls, scopes, closures</u>)</h2>
         <p>Open the browser console for more debug logs (F12 / DevTools).</p>
-        <pre id="console" aria-live="polite">No actions yet.</pre>
+        <pre id="app-output" aria-live="polite">No actions yet.</pre>
       </section>
 
       <section>
@@ -54,6 +53,7 @@
 
       <footer>
         <p>Open the browser console for more debug logs (F12 / DevTools).</p>
+        <pre id="footer-output" aria-live="polite">No actions yet.</pre>
       </footer>
     </main>
   </body>

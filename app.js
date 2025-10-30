@@ -1,13 +1,14 @@
 const $ = (sel) => document.querySelector(sel);
 
 const timeEl = $('#time');
-const consoleEl = $('#console');
+const appOutputEl = $('#app-output');
+const footerOutputEl = $('#footer-output');
 const showTimeBtn = $('#showTimeBtn');
 const toggleColorBtn = $('#toggleColorBtn');
 
-function log(msgHTML) {
+function log(outputEl, msgHTML) {
   const now = new Date().toLocaleTimeString();
-  consoleEl.innerHTML = `[${now}] ${msgHTML}`;
+  outputEl.innerHTML = `[${now}] ${msgHTML}`;
   console.log(msgHTML);
 }
 
@@ -28,13 +29,13 @@ function detectStrictMode() {
 function handleShowTime() {
   const s = getCurrentTimeString();
   timeEl.textContent = s;
-  log('Displayed current time: ' + s);
+  log(footerOutputEl, 'Displayed current time: ' + s);
 }
 
 function handleToggleColor() {
   document.body.classList.toggle('alt-bg');
   const isAlt = document.body.classList.contains('alt-bg');
-  log('Toggled background color. alt-bg=' + isAlt);
+  log(footerOutputEl, 'Toggled background color. alt-bg=' + isAlt);
 }
 
 // globalFunction of a small initialization function. You could also fetch data here.
@@ -56,7 +57,7 @@ function init() {
   // Small demo: write an initial log after load
   const isStrictMode = detectStrictMode();
   const msgHTML = `app.js initialized in <u><b>${isStrictMode ? 'strict mode' : 'sloppy mode'}</b></u>`;
-  log(msgHTML);
+  log(appOutputEl, msgHTML);
   console.log(msgHTML);
   console.log('this of init', this);
 }
