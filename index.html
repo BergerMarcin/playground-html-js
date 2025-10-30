@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>HTML JS playground</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
 
     <!-- *sloppy mode* / non strict mode & *async* loading strategy -->
     <!-- <script async src="app.js"></script> -->
@@ -15,6 +15,7 @@
     <!-- playground of modules aggregation i.e.: with aggregated-modules-object & namespace-exports -->
     <script type="module" src="app-aggregated-modules-object.js"></script>
     <script type="module" src="app-namespace-exports.js"></script>
+    <script type="module" src="app-dynamic-imports.js"></script>
   </head>
   <body>
     <main class="card">
@@ -40,14 +41,11 @@
 
       <section>
         <h2>Calculating area <u>(with dynamic imports)</u></h2>
-        <p>
-          <strong>Area:</strong>
-          <span id="area">(click the button)</span>
-        </p>
+        <pre id="area-output"><b>Area:</b> (click the button)</pre>
         <div class="btn-row" aria-label="shape area buttons">
-          <button id="btn-square" class="btn-primary">Square area of a=5</button>
-          <button id="btn-circle" class="btn-primary">Circle area of r=6</button>
-          <button id="btn-triangle" class="btn-primary">Triangle area of a=7 b=8</button>
+          <button id="square-btn">Square area of a=5</button>
+          <button id="circle-btn">Circle area of r=6</button>
+          <button id="triangle-btn">Triangle area of a=7 b=8</button>
         </div>
       </section>
 
