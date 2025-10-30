@@ -14,7 +14,28 @@
         margin: 0 auto;
         padding: 1.25rem;
         border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      }
+      section {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+      }
+      footer {
+        margin-top: 2rem; 
+        padding-left: 0.75rem;
+        font-size: 0.9rem; 
+        color: #555;
+      }
+      pre {
+        background: #f6f8fa;
+        padding: 0.75rem;
+        border-radius: 8px;
+        overflow: auto;
+      }
+      h2, h3, p {
+        margin-top: 0rem;
       }
       button {
         padding: 0.5rem 1rem;
@@ -22,11 +43,17 @@
         border: none;
         cursor: pointer;
       }
-      pre {
-        background: #f6f8fa;
-        padding: 0.75rem;
-        border-radius: 8px;
-        overflow: auto;
+      button:hover {
+        background: #868585;
+      }
+      button:active {
+        background: #5f5f5f;
+      }
+      .btn-row {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
       }
     </style>
 
@@ -36,32 +63,47 @@
     <!-- *strict mode* & *defer* loading strategy as it is *module* -->
     <script type="module" src="app.js"></script>
 
-    <script type="module" src="app-namespace-exports.js"></script>
-
+    <!-- playground of modules aggregation i.e.: with aggregated-modules-object & namespace-exports -->
     <script type="module" src="app-aggregated-modules-object.js"></script>
+    <script type="module" src="app-namespace-exports.js"></script>
   </head>
   <body>
     <main class="card">
-      <h1>index.html — external <code>app.js</code> demo</h1>
+      <h1>index.html — external <code>app.js, ...</code> demo</h1>
 
-      <p>This page demonstrates using an external JavaScript file (<code>app.js</code>).</p>
+      <p>This page demonstrates using an external JavaScript file (<code>app.js, ...</code>).</p>
 
-      <p>
-        <strong>Current time:</strong>
-        <span id="time">(click the button)</span>
-      </p>
-
-      <p>
-        <button id="showTimeBtn">Show current time</button>
-        <button id="toggleColorBtn">Toggle background color</button>
-      </p>
+      <section>
+        <p>
+          <strong>Current time:</strong>
+          <span id="time">(click the button)</span>
+        </p>
+        <div class="btn-row" aria-label="buttons of showing time and toggling page background color">
+          <button id="showTimeBtn">Show current time</button>
+          <button id="toggleColorBtn">Toggle background color</button>
+        </div>
+      </section>
 
       <section>
         <h2>Console output with <u>check chain calls, scopes, closures</u></h2>
+        <p>Open the browser console for more debug logs (F12 / DevTools).</p>
         <pre id="console" aria-live="polite">No actions yet.</pre>
       </section>
 
-      <footer style="margin-top: 1rem; font-size: 0.9rem; color: #555">
+      <section>
+        <h2>Calculating area <u>(with dynamic imports)</u></h2>
+        <p>
+          <strong>Area:</strong>
+          <span id="area">(click the button)</span>
+        </p>
+        <div class="btn-row" aria-label="shape area buttons">
+          <button id="btn-square" class="btn-primary">Square area of a=5</button>
+          <button id="btn-circle" class="btn-primary">Circle area of r=6</button>
+          <button id="btn-triangle" class="btn-primary">Triangle area of a=7 b=8</button>
+        </div>
+      </section>
+
+      <footer>
         <p>Open the browser console for more debug logs (F12 / DevTools).</p>
       </footer>
     </main>

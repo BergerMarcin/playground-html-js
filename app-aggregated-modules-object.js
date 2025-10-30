@@ -1,10 +1,10 @@
 // Example of using the shapes object directly i.e. aggregated modules object
 import { shapes } from './modules/shapes-aggregated-modules-object.js';
 
-const headerConsoleStyle = 'background: #08701bff; color: #fff; padding: 2px 8px; border-radius: 4px;';
+const appConsoleStyle = 'background: #08701bff; color: #fff; padding: 2px 8px; border-radius: 4px;';
 console.log(
   '%c*************** app-aggregated-modules-object.js Aggregated modules object ***************',
-  headerConsoleStyle
+  appConsoleStyle
 );
 
 // Access everything through the shapes object / aggregated modules object

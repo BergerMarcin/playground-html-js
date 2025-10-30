@@ -40,7 +40,7 @@ function handleToggleColor() {
 // globalFunction of a small initialization function. You could also fetch data here.
 function init() {
   console.log(
-    '%c🚀🚀🚀 Start init 🚀🚀🚀',
+    '%c🚀🚀🚀 App.js start init 🚀🚀🚀',
     'background: #1dd1e9ff; color: #000; font-size: 20px; padding: 2px 8px; border-radius: 4px;'
   );
   showTimeBtn.addEventListener('click', handleShowTime);
@@ -60,6 +60,12 @@ function init() {
   console.log(msgHTML);
   console.log('this of init', this);
 }
+
+const appConsoleStyle = 'background: #08701bff; color: #fff; padding: 2px 8px; border-radius: 4px;';
+console.log(
+  '%c*************** app.js General playground & check chain calls, scopes, closures ***************',
+  appConsoleStyle
+);
 
 // Run when DOM is ready
 if (document.readyState === 'loading') {
