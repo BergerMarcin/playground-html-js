@@ -20,21 +20,21 @@ function formatNumber(n) {
 
 // Dynamic imports of the shapes module
 squareBtn?.addEventListener('click', async () => {
-  import('./modules/shapes-namspace-exports.js').then((shapesModule) => {
+  import('../modules/shapes-namspace-exports.js').then((shapesModule) => {
     const area = shapesModule.square.calculate(5);
     log(`<b>${formatNumber(area)}</b> (square area with side 5)`);
   });
 });
 
 circleBtn?.addEventListener('click', async () => {
-  import('./modules/shapes-namspace-exports.js').then((shapesModule) => {
+  import('../modules/shapes-namspace-exports.js').then((shapesModule) => {
     const area = shapesModule.circle.calculate(6);
     log(`<b>${formatNumber(area)}</b> (circle area with radius 6)`);
   });
 });
 
 triangleBtn?.addEventListener('click', async () => {
-  import('./modules/shapes-namspace-exports.js').then((shapesModule) => {
+  import('../modules/shapes-namspace-exports.js').then((shapesModule) => {
     const area = shapesModule.triangle.calculate(7, 8);
     log(`<b>${formatNumber(area)}</b> (triangle area with base 7 and height 8)`);
   });

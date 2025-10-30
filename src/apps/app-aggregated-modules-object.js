@@ -1,5 +1,5 @@
 // Example of using the shapes object directly i.e. aggregated modules object
-import { shapes } from './modules/shapes-aggregated-modules-object.js';
+import { shapes } from '../modules/shapes-aggregated-modules-object.js';
 
 const appConsoleStyle = 'background: #08701bff; color: #fff; padding: 2px 8px; border-radius: 4px;';
 console.log(
