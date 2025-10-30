@@ -19,9 +19,9 @@ section {
 }
 
 footer {
-  margin-top: 2rem; 
+  margin-top: 2rem;
   padding-left: 0.75rem;
-  font-size: 0.9rem; 
+  font-size: 0.9rem;
   color: #555;
 }
 
@@ -32,7 +32,9 @@ pre {
   overflow: auto;
 }
 
-h2, h3, p {
+h2,
+h3,
+p {
   margin-top: 0rem;
 }
 

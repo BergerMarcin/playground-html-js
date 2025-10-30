@@ -35,7 +35,9 @@ circleBtn?.addEventListener('click', async () => {
 
 // Await dynamic import of the shapes module with destruction and renaming function
 triangleBtn?.addEventListener('click', async () => {
-  const { triangle: { calculate: calcTriangle } } = await import('../modules/shapes-namespace-exports.js');
+  const {
+    triangle: { calculate: calcTriangle },
+  } = await import('../modules/shapes-namespace-exports.js');
   const area = calcTriangle(7, 8);
   log(`<b>${formatNumber(area)}</b> (triangle area with base 7 and height 8)`);
 });
