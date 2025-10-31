@@ -6,7 +6,7 @@ let footerOutputEl;
 let showTimeBtn;
 let toggleColorBtn;
 
-function initHTMLElements() { 
+function initHTMLElements() {
   timeEl = $('#time');
   appOutputEl = $('#app-output');
   footerOutputEl = $('#footer-output');
@@ -53,7 +53,7 @@ function init() {
     '%c🚀🚀🚀 App.js starts init 🚀🚀🚀',
     'background: #1dd1e9ff; color: #000; font-size: 20px; padding: 2px 8px; border-radius: 4px;'
   );
-  
+
   initHTMLElements();
 
   showTimeBtn.addEventListener('click', handleShowTime);
