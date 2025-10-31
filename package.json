@@ -1,0 +1,32 @@
+{
+  "name": "playground-html-js",
+  "version": "0.1.0",
+  "description": "A small HTML + JS playground demonstrating multiple module patterns (ES modules, namespace exports, aggregated object).",
+  "main": "src/apps/app.js",
+  "type": "module",
+  "scripts": {
+    "dev": "http-server . -p 8080 -c-1 -o /public/index.html",
+    "dev-live-server": "npx live-server --port=3000 --open=public/index.html --watch=src,public",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "html",
+    "javascript",
+    "scopes",
+    "modules",
+    "playground"
+  ],
+  "author": "Marcin Berger marcin.berger@wp.pl",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/css": "^0.14.0",
+    "@eslint/js": "^9.38.0",
+    "@eslint/json": "^0.13.2",
+    "@eslint/markdown": "^7.5.0",
+    "eslint": "^9.38.0",
+    "globals": "^16.4.0",
+    "http-server": "^14.1.1",
+    "prettier": "^3.6.2"
+  }
+}
