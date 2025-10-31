@@ -1,10 +1,18 @@
 const $ = (sel) => document.querySelector(sel);
 
-const timeEl = $('#time');
-const appOutputEl = $('#app-output');
-const footerOutputEl = $('#footer-output');
-const showTimeBtn = $('#showTimeBtn');
-const toggleColorBtn = $('#toggleColorBtn');
+let timeEl;
+let appOutputEl;
+let footerOutputEl;
+let showTimeBtn;
+let toggleColorBtn;
+
+function initHTMLElements() { 
+  timeEl = $('#time');
+  appOutputEl = $('#app-output');
+  footerOutputEl = $('#footer-output');
+  showTimeBtn = $('#showTimeBtn');
+  toggleColorBtn = $('#toggleColorBtn');
+}
 
 function log(outputEl, msgHTML) {
   const now = new Date().toLocaleTimeString();
@@ -21,6 +29,7 @@ function detectStrictMode() {
     return (function () {
       return this === undefined;
     })();
+    // eslint-disable-next-line no-unused-vars
   } catch (err) {
     return false;
   }
@@ -41,9 +50,12 @@ function handleToggleColor() {
 // globalFunction of a small initialization function. You could also fetch data here.
 function init() {
   console.log(
-    '%c🚀🚀🚀 App.js start init 🚀🚀🚀',
+    '%c🚀🚀🚀 App.js starts init 🚀🚀🚀',
     'background: #1dd1e9ff; color: #000; font-size: 20px; padding: 2px 8px; border-radius: 4px;'
   );
+  
+  initHTMLElements();
+
   showTimeBtn.addEventListener('click', handleShowTime);
   toggleColorBtn.addEventListener('click', handleToggleColor);
 
@@ -127,6 +139,7 @@ const secondPerson = {
 };
 
 logFirstName(); // undefined always in strict mode, globalThis.firstName in sloppy mode (here also undefined)
+// eslint-disable-next-line no-unused-vars
 var firstName = 'Vijay';
 logFirstName(); // "Vijay" in sloppy mode, undefined in strict mode
 firstPerson.logFirstName(); // "Deepak"
@@ -164,6 +177,7 @@ var objectFirstName = 'Vijay';
 freeObjectLogFirstName(); // "Vijay" in sloppy mode (as `this` is taking from the nearest scope which is global scope); undefined in strict mode
 
 objectPerson.objectLogFirstName(); // "Ram"
+// eslint-disable-next-line no-unused-vars
 objectFirstName = 'Another Vijay';
 objectPerson.objectLogFirstName(); // "Ram"
 objectPerson.objectLogFirstName.call(this); // "Another Vijay" in sloppy mode, undefined in strict mode
@@ -205,6 +219,7 @@ var objectFirstNameArrow = 'VijayArrow';
 freeObjectLogFirstNameArrow(); // "VijayArrow" in sloppy mode (as `this` is taking from the surrounding/nearest LEXICAL scope which is global scope); `undefined` in strict mode (as global `this` is `undefined`)
 
 objectPersonArrow.objectLogFirstNameArrow(); // "VijayArrow" in sloppy mode; `undefined` in strict mode (as global `this` is `undefined`)
+// eslint-disable-next-line no-unused-vars
 objectFirstNameArrow = 'Another VijayArrow';
 objectPersonArrow.objectLogFirstNameArrow(); // "Another VijayArrow" in sloppy mode (as `this` is taking from the surrounding/nearest LEXICAL scope which is global scope); `undefined` in strict mode (as global `this` is `undefined`)
 objectPersonArrow.objectLogFirstNameArrow.call(this); // "Another VijayArrow" in sloppy mode; `undefined` in strict mode
@@ -245,6 +260,7 @@ sayPersonNameToThis.call(person2); // reusage; "Person Two"
 var personName = 'Global Person'; // in sloppy mode `this` of global scope got property `personName` (hoisted to the top of code) and assign value "Global Person" here; in strict mode `this` of global scope is `undefined`
 sayPersonNameToThis(); // reusage; "Global Person" in sloppy mode (`this` in method of object created by function instance created via `new` is taken from the nearest scope by the default, contrary to class instance method); `undefined` in strict mode
 sayPersonNameToThis.call(this); // reusage; "Global Person" in sloppy mode (as `this` has property `personName` with value "Global Person" and method is taken from the nearest scope by the default, contrary to class instance method); `undefined` in strict mode
+// eslint-disable-next-line no-unused-vars
 personName = 'Another Global Person'; // in sloppy mode `this`'s property `personName` gets/assigns value `Another Global Person` here; in strict mode `this` of global scope is `undefined`
 sayPersonNameToThis(); // reusage; "Another Global Person" in sloppy mode (as `this` has property `personName` with value `Another Global Person`); `undefined` in strict mode
 
@@ -278,6 +294,7 @@ sayPersonNameToThisArrow.call(personArrow2); // "Person One Arrow" as `call` is 
 var personNameArrow = 'Global Person Arrow'; // in sloppy mode `this` of global scope got property `personNameArrow` (hoisted to the top of code) and assign value "Global Person Arrow" here; in strict mode `this` of global scope is `undefined`
 sayPersonNameToThisArrow(); // "Person One Arrow" as arrow function is working as closure (so `this` is taken from outside scope acc. lexical, so from declaration place)
 sayPersonNameToThisArrow.call(this); // "Person One Arrow" as `call` is not working as arrow function has not own `this`
+// eslint-disable-next-line no-unused-vars
 personNameArrow = 'Another Global Person Arrow'; // in sloppy mode `this`'s property `personNameArrow` gets/assigns value `Another Global Person Arrow` here; in strict mode `this` of global scope is `undefined`
 sayPersonNameToThisArrow(); // "Person One Arrow" as arrow function is working as closure (so `this` is taken from outside scope acc. lexical, so from declaration place)
 
@@ -313,6 +330,7 @@ var userName = 'Global User'; // in sloppy mode `this` of global scope got prope
 sayHiToThis(); // `undefined` as class methods are not taking `this` from the nearest scope/context
 sayHiToThis.call(this); // reusage; "Global User" in sloppy mode (as `this` has property `userName` with value "Global User"); `undefined` in strict mode
 bob.sayHi.bind(this)(); // reusage; "Global User"
+// eslint-disable-next-line no-unused-vars
 userName = 'Another Global User'; // in sloppy mode `this`'s property `userName` gets/assigns value "Another Global User" here; in strict mode `this` of global scope is `undefined`
 sayHiToThis.call(this); // reusage; "Another Global User" in sloppy mode (as `this` has property `userName` with value "Another Global User"); `undefined` in strict mode
 
@@ -327,46 +345,47 @@ john.sayHi(); // "John" as `this` is `john` instance which has property `userNam
 console.log('%c*************** `this` in calls of class static method ***************', headerConsoleStyle);
 
 class StaticUser {
-  constructor(userName) {
-    this.userName = userName;
+  constructor(userNameStatic) {
+    this.userNameStatic = userNameStatic;
   }
   static staticSayHi() {
-    console.log(this?.userName); // `?` to avoid error when `this` is `undefined` (especially in strict mode). Note: `this` in static method is class/constructor itself i.e. it is static context
+    console.log(this?.userNameStatic); // `?` to avoid error when `this` is `undefined` (especially in strict mode). Note: `this` in static method is class/constructor itself i.e. it is static context
   }
 }
 
-StaticUser.staticSayHi(); // `undefined` as static context/`this` (i.e. of `StaticUser` class/constructor) has no property `userName` (note: property `userName` should be defined at class/constructor level)
+StaticUser.staticSayHi(); // `undefined` as static context/`this` (i.e. of `StaticUser` class/constructor) has no property `userNameStatic` (note: property `userNameStatic` should be defined at class/constructor level)
 
 const charlie = new StaticUser('Charlie');
-charlie.constructor.staticSayHi(); // `undefined` as static context/`this` (i.e. of `StaticUser` class/constructor) has no property `userName`
+charlie.constructor.staticSayHi(); // `undefined` as static context/`this` (i.e. of `StaticUser` class/constructor) has no property `userNameStatic`
 
-StaticUser.staticSayHi(); // `undefined` as static context/`this` (i.e. of `StaticUser` class/constructor) has no property `userName`
+StaticUser.staticSayHi(); // `undefined` as static context/`this` (i.e. of `StaticUser` class/constructor) has no property `userNameStatic`
 
-var userName = 'Global Static User';
-StaticUser.staticSayHi(); // `undefined` as static context/`this` (i.e. of `StaticUser` class/constructor) has no property `userName` and not taking `userName` from global
-StaticUser.staticSayHi.call({ userName: 'Some Static User' }); // "Some Static User" as `this` is the object passed in `call` which has property `userName` of value "Some Static User"
+// eslint-disable-next-line no-unused-vars
+var userNameStatic = 'Global Static User';
+StaticUser.staticSayHi(); // `undefined` as static context/`this` (i.e. of `StaticUser` class/constructor) has no property `userNameStatic` and not taking `userNameStatic` from global
+StaticUser.staticSayHi.call({ userNameStatic: 'Some Static User' }); // "Some Static User" as `this` is the object passed in `call` which has property `userNameStatic` of value "Some Static User"
 
 const staticSayHi = StaticUser.staticSayHi; // static context/`this` (i.e. of `StaticUser` class) was lost here
 staticSayHi(); // `undefined` as class methods are not taking `this` from the nearest scope/context. `this` is "hermetized".
-staticSayHi.call(this); // "Global Static User" in sloppy mode (as `this` has property `userName` with value "Global Static User"); `undefined` in strict mode
+staticSayHi.call(this); // "Global Static User" in sloppy mode (as `this` has property `userNameStatic` with value "Global Static User"); `undefined` in strict mode
 
-StaticUser.staticSayHi.bind(this)(); // "Global Static User" in sloppy mode (as `this` has property `userName` with value "Global Static User"); `undefined` in strict mode
+StaticUser.staticSayHi.bind(this)(); // "Global Static User" in sloppy mode (as `this` has property `userNameStatic` with value "Global Static User"); `undefined` in strict mode
 
-StaticUser.userName = 'Static User'; // define property `userName` at static context / at class level and assign value "Static User"
-StaticUser.staticSayHi(); // "Static User" as static context/`this` (i.e. of `StaticUser` class) now has property `userName` of value "Static User"
+StaticUser.userNameStatic = 'Static User'; // define property `userNameStatic` at static context / at class level and assign value "Static User"
+StaticUser.staticSayHi(); // "Static User" as static context/`this` (i.e. of `StaticUser` class) now has property `userNameStatic` of value "Static User"
 StaticUser.staticSayHiToHoney = function () {
-  console.log(`Hi ${this?.userName}, honey!`);
+  console.log(`Hi ${this?.userNameStatic}, honey!`);
 }; // define new static method at class level
-StaticUser.staticSayHiToHoney(); // "Hi Static User, honey!" as static context/`this` (i.e. of `StaticUser` class) now has static method `staticSayHiToHoney` and property `userName` of value "Static User"
+StaticUser.staticSayHiToHoney(); // "Hi Static User, honey!" as static context/`this` (i.e. of `StaticUser` class) now has static method `staticSayHiToHoney` and property `userNameStatic` of value "Static User"
 
-charlie.constructor.userName = 'Another Charlie'; // define property `userName` at static context / at class level via class instance's constructor. In fact reassign value to "Another Charlie"
-charlie.constructor.staticSayHi(); // "Another Charlie" as context/`this` is static/class `StaticUser` and ithas property `userName` of value "Another Charlie"
-charlie.constructor.staticSayHiToHoney(); // "Hi Static User, honey!" as static context/`this` (i.e. of `StaticUser` class) now has static method `staticSayHiToHoney` and property `userName` of value "Another Charlie"
+charlie.constructor.userNameStatic = 'Another Charlie'; // define property `userNameStatic` at static context / at class level via class instance's constructor. In fact reassign value to "Another Charlie"
+charlie.constructor.staticSayHi(); // "Another Charlie" as context/`this` is static/class `StaticUser` and ithas property `userNameStatic` of value "Another Charlie"
+charlie.constructor.staticSayHiToHoney(); // "Hi Static User, honey!" as static context/`this` (i.e. of `StaticUser` class) now has static method `staticSayHiToHoney` and property `userNameStatic` of value "Another Charlie"
 
-StaticUser.staticSayHi(); // "Another Charlie" as static `this` is `StaticUser` class which has property `userName` from constructor
+StaticUser.staticSayHi(); // "Another Charlie" as static `this` is `StaticUser` class which has property `userNameStatic` from constructor
 
-StaticUser.userName = 'Another Static User'; // reassign value to "Another Static User" of property `userName` at class level
-StaticUser.staticSayHi(); // "Another Static User" as `this` is `StaticUser` class which has property `userName` of value "Static User"
+StaticUser.userNameStatic = 'Another Static User'; // reassign value to "Another Static User" of property `userNameStatic` at class level
+StaticUser.staticSayHi(); // "Another Static User" as `this` is `StaticUser` class which has property `userNameStatic` of value "Static User"
 
 /* ------------------ CHAIN CALLS ------------------ */
 
@@ -415,6 +434,7 @@ function globalFunction() {
   var functionVarWithVar =
     "I'm variable of function with var (I was thinking I'm global but I'm local due to being in scope of globalFunction function)";
   let functionVarWithLet = "I'm variable of function with let";
+  // eslint-disable-next-line no-undef
   functionVarWithoutDeclarationOperator = "I'm variable of function without declaration operator"; // in 'strict mode' ❌ ReferenceError & stop running code
 
   nestedInGlobalFunction(); // ✅ accessible due to hosting in function scope of `globalFunction` function
@@ -436,6 +456,7 @@ function globalFunction() {
 
   console.log('globalFunction function. functionVarWithVar:', functionVarWithVar); // ✅ accessible
   console.log('globalFunction function. functionVarWithLet:', functionVarWithLet); // ✅ accessible
+  // eslint-disable-next-line no-undef
   console.log('globalFunction function. functionVarWithoutDeclarationOperator:', functionVarWithoutDeclarationOperator); // ❌ in 'strict mode' code stopped before, ✅ accessible in 'sloppy mode'
 
   console.log('function -> block scope. functionBlockScopeVarWithVar:', functionBlockScopeVarWithVar); // ✅ accessible
@@ -464,10 +485,12 @@ globalVarWithVar = "I'm variable of global with var";
 console.log('global scope. globalVarWithVar:', globalVarWithVar); // ✅ accessible (with value 🙂)
 console.log('global scope. globalVarWithLet:', globalVarWithLet); // ✅ accessible
 
+// eslint-disable-next-line no-undef
 blockFunction(); // ❌ in 'strict mode' code stopped before, ✅ accessible in 'sloppy mode'
 console.log('global scope. blockScopeVarWithVar:', blockScopeVarWithVar); // ✅ accessible
 // console.log("global scope. blockScopeVarWithLet:", blockScopeVarWithLet); // ❌ ReferenceError
 
+// eslint-disable-next-line no-undef
 console.log('global scope. functionVarWithoutDeclarationOperator:', functionVarWithoutDeclarationOperator); // ❌ in 'strict mode' code stopped before, ✅ accessible in 'sloppy mode'
 // console.log("global scope. functionVarWithVar:", functionVarWithVar);  // ❌ ReferenceError
 // console.log("global scope. functionVarWithLet:", functionVarWithLet);  // ❌ ReferenceError
