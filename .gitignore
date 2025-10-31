@@ -24,6 +24,9 @@ Thumbs.db
 # coverage
 coverage/
 
+# Parcel / cache
+.parcel-cache/
+
 # Prettier / cache
 .cache/
 

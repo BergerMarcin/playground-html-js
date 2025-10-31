@@ -2,11 +2,14 @@
   "name": "playground-html-js",
   "version": "0.1.0",
   "description": "A small HTML + JS playground demonstrating multiple module patterns (ES modules, namespace exports, aggregated object).",
-  "main": "src/apps/app.js",
+  "source": "src/index.html",
   "type": "module",
   "scripts": {
-    "dev": "http-server . -p 8080 -c-1 -o /public/index.html",
-    "dev-live-server": "npx live-server --port=3000 --open=public/index.html --watch=src,public",
+    "dev": "http-server . -p 8080 -c-1 -o /src/index.html",
+    "dev-live-server": "npx live-server --port=3000 --open=src/index.html --watch=src,public",
+    "build": "parcel build",
+    "serve-build": "http-server dist -p 5000 -c-1 -o /index.html",
+    "clean": "rimraf dist .parcel-cache",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
@@ -27,6 +30,8 @@
     "eslint": "^9.38.0",
     "globals": "^16.4.0",
     "http-server": "^14.1.1",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "parcel": "^2.9.3",
+    "rimraf": "^6.1.0"
   }
 }
