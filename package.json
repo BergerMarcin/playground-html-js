@@ -8,7 +8,7 @@
     "dev": "http-server . -p 8080 -c-1 -o /src/index.html",
     "dev-live-server": "npx live-server --port=3000 --open=src/index.html --watch=src,public",
     "build": "parcel build",
-    "serve-build": "http-server dist -p 5000 -c-1 -o /index.html",
+    "serve-build": "test -f dist/index.html && http-server dist -p 5000 -c-1 -o /index.html || echo 'Error: dist/index.html not found. Please run npm run build first.'",
     "clean": "rimraf dist .parcel-cache",
     "lint": "eslint .",
     "format": "prettier --write ."
